@@ -40,6 +40,23 @@ namespace FileProperties
             TextBoxLastAccessTime.Text = fi.LastAccessTime.ToLongTimeString();
             TextBoxLastWriteTime.Text = fi.LastWriteTime.ToLongTimeString();
         }
+        
+        private void DisplayFolderList(string folder)
+        {
+            DirectoryInfo di = new DirectoryInfo(folder);
+
+            if (!di.Exists)
+                throw new DirectoryNotFoundException("Папка не найдена :(");
+            ClearAllFields();
+            TextBoxFolder.Text = di.FullName;
+            currentFolderPath = di.FullName;
+
+            foreach (DirectoryInfo d in di.GetDirectories())
+                ListBoxFolders.Items.Add(d.Name);
+
+            foreach (FileInfo f in di.GetFiles())
+                ListBoxFiles.Items.Add(f.Name);
+        }
 
         private void buttonDisplay_Click(object sender, RoutedEventArgs e)
         {
