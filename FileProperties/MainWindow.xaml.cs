@@ -90,7 +90,15 @@ namespace FileProperties
 
         private void buttonUp_Click(object sender, RoutedEventArgs e)
         {
-           
+            try
+            {
+                string folderPath = new FileInfo(_currentFolderPath).DirectoryName;
+                DisplayFolderList(folderPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void listBoxFiles_SelectionChanged(object sender, SelectionChangedEventArgs e)
