@@ -8,15 +8,99 @@
                       WindowStartupLocation="CenterScreen"
                       SizeToContent="WidthAndHeight">
     <StackPanel Margin="10">
-        <TextBlock Margin="10,0,5,0">Введите путь к папке и нажмите
-            <Run Foreground="DarkOrange">Отобразить</Run></TextBlock>
+        <TextBlock Margin="10,0,5,0">Введите путь к папке и нажмите <Run Foreground="DarkOrange">Отобразить</Run></TextBlock>
         <Grid Margin="10,5,5,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="auto" SharedSizeGroup="myBtnGroup" x:Name="Cd1"></ColumnDefinition>
-            </Grid.ColumnDefinitions> 
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="TextBoxInput" VerticalContentAlignment="Center" 
+                     FontSize="12">C:\</TextBox>
+            <Button x:Name="ButtonDisplay" Content="Отобразить" Grid.Column="1" Padding="5"
+                    Margin="5,0,5,0" Click="buttonDisplay_Click"></Button>
         </Grid>
+        <GroupBox Header="Проводник">
+            <StackPanel>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition SharedSizeGroup="myBtnGroup" Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="TextBoxFolder" VerticalContentAlignment="Center" FontSize="12" Foreground="Gray"></TextBox>
+                    <Button x:Name="ButtonUp" Content="Вверх" Grid.Column="1" Padding="5" 
+                            Width="{Binding ElementName=ButtonDisplay, Path=ActualWidth}"
+                            Margin="5,0,0,0" Click="buttonUp_Click"></Button>
+                </Grid>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock>Файлы</TextBlock>
+                    <TextBlock Grid.Row="0" Grid.Column="1">Папки</TextBlock>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0">
+                        <ListBox  MinHeight="200" MaxHeight="300" Margin="0,5,5,0"
+                                  x:Name="ListBoxFiles" 
+                             SelectionChanged="listBoxFiles_SelectionChanged"></ListBox>
+                    </ScrollViewer>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1">
+                        <ListBox MinHeight="200" MaxHeight=listBoxFolders_SelectionChanged         SelectionChanged="listBoxFolders_SelectionChanged"
+                                 Margin="0,5,5,0" x:Name="ListBoxFolders"></ListBox>
+                    </ScrollViewer>
+                </Grid>
+                <GroupBox Header="Свойства файла">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center">Путь к файлу:</TextBlock>
+                            <TextBox Grid.Column="1" Margin="5,0,0,0"
+                                     x:Name="TextBoxFileName"
+                                   Height="{Binding ElementName=TextBoxInput,
+                                    Path=ActualHeight}"
+                                   FontSize="12" VerticalContentAlignment="Center"></TextBox>
+                        </Grid>
+                        <Grid Margin="0,5,0,0">
+                            <Grid.Resources>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Margin" Value="0,5,5,5"></Setter>
+                                    <Setter Property="Height" 
+                                            Value="{Binding ElementName=TextBoxInput, 
+                                            Path=ActualHeight}"></Setter>
+                                    <Setter Property="VerticalContentAlignment" 
+                                            Value="Center"></Setter>
+                                    <Setter Property="FontSize" Value="12"></Setter>
+                                    <Setter Property="IsReadOnly" Value="true"></Setter>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock>Размер файла</TextBlock>
+                            <TextBox x:Name="TextBoxFileSize" Grid.Row="1" Grid.Column="0"></TextBox>
+                            <TextBlock Grid.Row="0" Grid.Column="1">Время создания: </TextBlock>
+                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="TextBoxCreationTime"></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0">Изменен</TextBlock>
+                            <TextBlock Grid.Row="2" Grid.Column="1">Открыт</TextBlock>
+                            <TextBox Grid.Row="3" Grid.Column="0" x:Name="TextBoxLastWriteTime"></TextBox>
+                            <TextBox Grid.Row="3" Grid.Column="1" x:Name="TextBoxLastAccessTime"></TextBox>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </GroupBox>
     </StackPanel>
-   
-    
 </Window>
