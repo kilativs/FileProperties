@@ -109,7 +109,16 @@ namespace FileProperties
 
         private void listBoxFolders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            try
+            {
+                string selectionString = ListBoxFolders.SelectedItem.ToString();
+                string fullPathName = Path.Combine(_currentFolderPath, selectionString);
+                DisplayFolderList(fullPathName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
