@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace FileProperties
@@ -24,6 +25,20 @@ namespace FileProperties
             TextBoxLastAccessTime.Text = "";
             TextBoxLastWriteTime.Text = "";
             TextBoxFileSize.Text = "";
+        }
+
+        private void DisplayFileInfo(string fileFullName)
+        {
+            FileInfo fi = new FileInfo(fileFullName);
+            if (!fi.Exists)
+            {
+                throw new FileNotFoundException("Файл "+fileFullName+" не найден :(");
+            }
+            TextBoxFileName.Text = fi.Name;
+            TextBoxFileSize.Text = (fi.Length / 1024).ToString() + " kb";
+            TextBoxCreationTime.Text = fi.CreationTime.ToLongTimeString();
+            TextBoxLastAccessTime.Text = fi.LastAccessTime.ToLongTimeString();
+            TextBoxLastWriteTime.Text = fi.LastWriteTime.ToLongTimeString();
         }
 
         private void buttonDisplay_Click(object sender, RoutedEventArgs e)
