@@ -10,7 +10,7 @@ namespace FileProperties
     /// </summary>
     public partial class MainWindow
     {
-        private string currentFolderPath;
+        private string _currentFolderPath;
         public MainWindow()
         {
             InitializeComponent();
@@ -50,7 +50,7 @@ namespace FileProperties
                 throw new DirectoryNotFoundException("Папка не найдена :(");
             ClearAllFields();
             TextBoxFolder.Text = di.FullName;
-            currentFolderPath = di.FullName;
+            _currentFolderPath = di.FullName;
 
             foreach (DirectoryInfo d in di.GetDirectories())
                 ListBoxFolders.Items.Add(d.Name);
@@ -95,7 +95,16 @@ namespace FileProperties
 
         private void listBoxFiles_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
+            try
+            {
+                string selectionString = ListBoxFiles.SelectedItem.ToString();
+                string fullFileName = Path.Combine(_currentFolderPath, selectionString);
+                DisplayFileInfo(fullFileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void listBoxFolders_SelectionChanged(object sender, SelectionChangedEventArgs e)
