@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -60,7 +61,31 @@ namespace FileProperties
 
         private void buttonDisplay_Click(object sender, RoutedEventArgs e)
         {
-           
+            try
+            {
+                string folderPath = TextBoxInput.Text;
+                DirectoryInfo di = new DirectoryInfo(folderPath);
+                if (di.Exists)
+                {
+                    DisplayFolderList(di.FullName);
+                    return;
+                }
+
+                FileInfo fi = new FileInfo(folderPath);
+                if (fi.Exists)
+                {
+                    if (fi.Directory != null) DisplayFolderList(fi.Directory.FullName);
+                    int i = ListBoxFiles.Items.IndexOf(fi.Name);
+                    ListBoxFiles.SelectedIndex = i;
+                    return;
+                }
+
+                throw new FileNotFoundException("Файл или папка с таким именем не существует");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void buttonUp_Click(object sender, RoutedEventArgs e)
