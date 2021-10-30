@@ -8,9 +8,22 @@ namespace FileProperties
     /// </summary>
     public partial class MainWindow
     {
+        private string currentFolderPath;
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ClearAllFields()
+        {
+            ListBoxFolders.Items.Clear();
+            ListBoxFiles.Items.Clear();
+            TextBoxFolder.Text = "";
+            TextBoxFileName.Text = "";
+            TextBoxCreationTime.Text = "";
+            TextBoxLastAccessTime.Text = "";
+            TextBoxLastWriteTime.Text = "";
+            TextBoxFileSize.Text = "";
         }
 
         private void buttonDisplay_Click(object sender, RoutedEventArgs e)
