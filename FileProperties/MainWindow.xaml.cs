@@ -131,11 +131,9 @@ namespace FileProperties
                 var filePath = Path.Combine(_currentFolderPath, TextBoxFileName.Text);
                 var query = "Действительно переместить файл \n" + filePath + " ?";
                 if (MessageBox.Show(query, "Переместить файл?", MessageBoxButton.YesNo,
-                    MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    File.Move(filePath, TextBoxNewPath.Text);
-                    DisplayFolderList(_currentFolderPath);
-                }
+                    MessageBoxImage.Question) != MessageBoxResult.Yes) return;
+                File.Move(filePath, TextBoxNewPath.Text);
+                DisplayFolderList(_currentFolderPath);
             }
             catch (Exception exception)
             {
