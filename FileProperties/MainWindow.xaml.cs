@@ -143,7 +143,16 @@ namespace FileProperties
 
         private void buttonCopy_Click(object sender, RoutedEventArgs e)
         {
-           
+            try
+            {
+                var filePath = Path.Combine(_currentFolderPath, TextBoxFileName.Text);
+                File.Copy(filePath, TextBoxFileName.Text);
+                DisplayFolderList(_currentFolderPath);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Не удается скопировать файл из-за исключения: " + exception.Message);
+            }
         }
 
         private void buttonDelete_Click(object sender, RoutedEventArgs e)
