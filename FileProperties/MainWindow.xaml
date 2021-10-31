@@ -48,7 +48,8 @@
                              SelectionChanged="listBoxFiles_SelectionChanged"></ListBox>
                     </ScrollViewer>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1">
-                        <ListBox MinHeight="200" MaxHeight=listBoxFolders_SelectionChanged         SelectionChanged="listBoxFolders_SelectionChanged"
+                        <ListBox MinHeight="200" MaxWidth="300"  
+                                 SelectionChanged="listBoxFolders_SelectionChanged"
                                  Margin="0,5,5,0" x:Name="ListBoxFolders"></ListBox>
                     </ScrollViewer>
                 </Grid>
@@ -97,6 +98,33 @@
                             <TextBlock Grid.Row="2" Grid.Column="1">Открыт</TextBlock>
                             <TextBox Grid.Row="3" Grid.Column="0" x:Name="TextBoxLastWriteTime"></TextBox>
                             <TextBox Grid.Row="3" Grid.Column="1" x:Name="TextBoxLastAccessTime"></TextBox>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Переместить, удалить или копировать файл">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="Button">
+                                   <Setter Property="Padding" Value="3"></Setter>
+                                    <Setter Property="Margin" Value="0,5,5,5"></Setter>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button x:Name="ButtonMove" Click="buttonMove_Click">Переместить</Button>
+                            <Button x:Name="ButtonCopy" Click="buttonCopy_Click">Копировать</Button>
+                            <Button x:Name="ButtonDelete" Click="buttonDelete_Click">Удалить</Button>
+                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Margin="0,5,5,5" VerticalAlignment="Center">Новое расположение
+                            </TextBlock>
+                            <TextBox Grid.Column="1" Height="{Binding ElementName=TextBoxInput, 
+                                     Path=ActualHeight}"
+                                     VerticalContentAlignment="Center" FontSize="12" x:Name="TextBoxNewPath">
+                            </TextBox>
                         </Grid>
                     </StackPanel>
                 </GroupBox>
