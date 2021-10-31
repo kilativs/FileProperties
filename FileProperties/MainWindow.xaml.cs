@@ -148,7 +148,19 @@ namespace FileProperties
 
         private void buttonDelete_Click(object sender, RoutedEventArgs e)
         {
-           
+            try
+            {
+                var filePath = Path.Combine(_currentFolderPath, TextBoxFileName.Text);
+                var query = "Действительно удалить файл \n" + filePath + " ?";
+                if (MessageBox.Show(query, "Удалить файл?", MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) != MessageBoxResult.Yes) return;
+                File.Delete(filePath);
+                DisplayFolderList(_currentFolderPath);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Не удается удалить файл из-за исключения: " + exception.Message);
+            }
         }
     }
 }
