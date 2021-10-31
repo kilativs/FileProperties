@@ -30,7 +30,7 @@ namespace FileProperties
 
         private void DisplayFileInfo(string fileFullName)
         {
-            FileInfo fi = new FileInfo(fileFullName);
+            var fi = new FileInfo(fileFullName);
             if (!fi.Exists)
             {
                 throw new FileNotFoundException("Файл "+fileFullName+" не найден :(");
@@ -44,7 +44,7 @@ namespace FileProperties
         
         private void DisplayFolderList(string folder)
         {
-            DirectoryInfo di = new DirectoryInfo(folder);
+            var di = new DirectoryInfo(folder);
 
             if (!di.Exists)
                 throw new DirectoryNotFoundException("Папка не найдена :(");
@@ -52,10 +52,10 @@ namespace FileProperties
             TextBoxFolder.Text = di.FullName;
             _currentFolderPath = di.FullName;
 
-            foreach (DirectoryInfo d in di.GetDirectories())
+            foreach (var d in di.GetDirectories())
                 ListBoxFolders.Items.Add(d.Name);
 
-            foreach (FileInfo f in di.GetFiles())
+            foreach (var f in di.GetFiles())
                 ListBoxFiles.Items.Add(f.Name);
         }
 
@@ -63,24 +63,19 @@ namespace FileProperties
         {
             try
             {
-                string folderPath = TextBoxInput.Text;
-                DirectoryInfo di = new DirectoryInfo(folderPath);
+                var folderPath = TextBoxInput.Text;
+                var di = new DirectoryInfo(folderPath);
                 if (di.Exists)
                 {
                     DisplayFolderList(di.FullName);
                     return;
                 }
 
-                FileInfo fi = new FileInfo(folderPath);
-                if (fi.Exists)
-                {
-                    if (fi.Directory != null) DisplayFolderList(fi.Directory.FullName);
-                    int i = ListBoxFiles.Items.IndexOf(fi.Name);
-                    ListBoxFiles.SelectedIndex = i;
-                    return;
-                }
-
-                throw new FileNotFoundException("Файл или папка с таким именем не существует");
+                var fi = new FileInfo(folderPath);
+                if (!fi.Exists) throw new FileNotFoundException("Файл или папка с таким именем не существует");
+                if (fi.Directory != null) DisplayFolderList(fi.Directory.FullName);
+                var i = ListBoxFiles.Items.IndexOf(fi.Name);
+                ListBoxFiles.SelectedIndex = i;
             }
             catch (Exception ex)
             {
@@ -92,7 +87,7 @@ namespace FileProperties
         {
             try
             {
-                string folderPath = new FileInfo(_currentFolderPath).DirectoryName;
+                var folderPath = new FileInfo(_currentFolderPath).DirectoryName;
                 DisplayFolderList(folderPath);
             }
             catch (Exception ex)
@@ -105,8 +100,8 @@ namespace FileProperties
         {
             try
             {
-                string selectionString = ListBoxFiles.SelectedItem.ToString();
-                string fullFileName = Path.Combine(_currentFolderPath, selectionString);
+                var selectionString = ListBoxFiles.SelectedItem.ToString();
+                var fullFileName = Path.Combine(_currentFolderPath, selectionString);
                 DisplayFileInfo(fullFileName);
             }
             catch (Exception ex)
@@ -119,14 +114,41 @@ namespace FileProperties
         {
             try
             {
-                string selectionString = ListBoxFolders.SelectedItem.ToString();
-                string fullPathName = Path.Combine(_currentFolderPath, selectionString);
+                var selectionString = ListBoxFolders.SelectedItem.ToString();
+                var fullPathName = Path.Combine(_currentFolderPath, selectionString);
                 DisplayFolderList(fullPathName);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void buttonMove_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var filePath = Path.Combine(_currentFolderPath, TextBoxFileName.Text);
+                var query = "Действительно переместить файл \n" + filePath + " ?";
+                if (MessageBox.Show(query, "Переместить файл?", MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) != MessageBoxResult.Yes) return;
+                File.Move(filePath, TextBoxNewPath.Text);
+                DisplayFolderList(_currentFolderPath);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Не удается переместить файл из-за исключения: " + exception.Message);
+            }
+        }
+
+        private void buttonCopy_Click(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void buttonDelete_Click(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 }
